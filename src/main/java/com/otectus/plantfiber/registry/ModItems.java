@@ -5,6 +5,7 @@ import com.otectus.plantfiber.config.PlantFiberConfig;
 import com.otectus.plantfiber.item.ConfigurableBedItem;
 import com.otectus.plantfiber.item.GrassArmorItem;
 import com.otectus.plantfiber.item.HealingConsumableItem;
+import com.otectus.plantfiber.item.RopeBlockItem;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
@@ -18,6 +19,12 @@ public final class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, PlantFiberMod.MODID);
 
     public static final RegistryObject<Item> PLANT_FIBER = ITEMS.register("plant_fiber",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> PLANT_MESH = ITEMS.register("plant_mesh",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> REINFORCED_FIBERS = ITEMS.register("reinforced_fibers",
             () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> GRASS_BANDAGE = ITEMS.register("grass_bandage",
@@ -57,6 +64,9 @@ public final class ModItems {
 
     public static final RegistryObject<Item> GRASS_BED_ITEM = ITEMS.register("grass_bed",
             () -> new ConfigurableBedItem(ModBlocks.GRASS_BED.get(), new Item.Properties()));
+
+    public static final RegistryObject<Item> ROPE_ITEM = ITEMS.register("rope",
+            () -> new RopeBlockItem(ModBlocks.ROPE.get(), new Item.Properties()));
 
     private ModItems() {
     }

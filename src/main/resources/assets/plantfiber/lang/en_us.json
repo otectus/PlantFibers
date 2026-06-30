@@ -1,5 +1,9 @@
 {
   "item.plantfiber.plant_fiber": "Plant Fiber",
+  "item.plantfiber.plant_mesh": "Plant Mesh",
+  "item.plantfiber.reinforced_fibers": "Reinforced Fibers",
+  "block.plantfiber.rope": "Rope",
+  "entity.plantfiber.rope_knot": "Rope Knot",
   "item.plantfiber.grass_bandage": "Grass Bandage",
   "item.plantfiber.grass_plaster": "Grass Plaster",
   "block.plantfiber.grass_fiber_block": "Grass Fiber Block",

@@ -19,6 +19,13 @@ public final class ModCreativeTabs {
                     .icon(() -> new ItemStack(ModItems.PLANT_FIBER.get()))
                     .displayItems((parameters, output) -> {
                         output.accept(ModItems.PLANT_FIBER.get());
+                        output.accept(ModItems.PLANT_MESH.get());
+                        if (PlantFiberConfig.COMMON.enableReinforcedFibers.get()) {
+                            output.accept(ModItems.REINFORCED_FIBERS.get());
+                        }
+                        if (PlantFiberConfig.COMMON.enableRope.get()) {
+                            output.accept(ModItems.ROPE_ITEM.get());
+                        }
                         output.accept(ModItems.GRASS_BANDAGE.get());
                         output.accept(ModItems.GRASS_PLASTER.get());
                         output.accept(ModItems.GRASS_FIBER_BLOCK_ITEM.get());

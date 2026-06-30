@@ -1,6 +1,8 @@
 package com.otectus.plantfiber.event;
 
 import com.otectus.plantfiber.PlantFiberMod;
+import com.otectus.plantfiber.crafting.ConfigCondition;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -12,5 +14,6 @@ public final class ModSetup {
 
     @SubscribeEvent
     public static void onCommonSetup(FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> CraftingHelper.register(ConfigCondition.Serializer.INSTANCE));
     }
 }

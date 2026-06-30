@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "fence_anchored=false,waterlogged=false": { "model": "plantfiber:block/rope" },
+    "fence_anchored=false,waterlogged=true": { "model": "plantfiber:block/rope" },
+    "fence_anchored=true,facing=north": { "model": "plantfiber:block/rope_fence_anchored" },
+    "fence_anchored=true,facing=east": { "model": "plantfiber:block/rope_fence_anchored", "y": 90 },
+    "fence_anchored=true,facing=south": { "model": "plantfiber:block/rope_fence_anchored", "y": 180 },
+    "fence_anchored=true,facing=west": { "model": "plantfiber:block/rope_fence_anchored", "y": 270 }
+  }
+}

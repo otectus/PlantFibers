@@ -4,11 +4,13 @@ license="All Rights Reserved"
 
 [[mods]]
 modId="plantfiber"
-version="1.0.2"
+version="1.2.0"
 displayName="Plant Fiber + Grass Tier"
 authors="Otectus"
 description='''
 Adds Plant Fiber drops, healing items, grass-tier blocks, and grass armor.
+Press fibers into Plant Mesh for primitive paper-making, and strengthen them into
+Reinforced Fibers and climbable Rope for vertical exploration.
 '''
 
 [[dependencies.plantfiber]]

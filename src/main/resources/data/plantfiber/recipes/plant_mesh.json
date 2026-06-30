@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PPP",
+    " W ",
+    "   "
+  ],
+  "key": {
+    "P": { "item": "plantfiber:plant_fiber" },
+    "W": { "item": "minecraft:water_bucket" }
+  },
+  "result": {
+    "item": "plantfiber:plant_mesh",
+    "count": 1
+  }
+}

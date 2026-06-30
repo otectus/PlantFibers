@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.otectus.plantfiber'
-version = '1.0.2'
+version = '1.2.0'
 
 base {
     archivesName = 'plantfiber'
@@ -70,11 +70,11 @@ tasks.named('jar', Jar).configure {
     manifest {
         attributes([
                 'Specification-Title'     : 'plantfiber',
-                'Specification-Vendor'    : 'Example',
+                'Specification-Vendor'    : 'Otectus',
                 'Specification-Version'   : '1',
                 'Implementation-Title'    : project.name,
                 'Implementation-Version'  : project.version,
-                'Implementation-Vendor'   : 'Example'
+                'Implementation-Vendor'   : 'Otectus'
         ])
     }
 }

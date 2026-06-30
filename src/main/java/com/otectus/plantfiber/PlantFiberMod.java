@@ -4,6 +4,7 @@ import com.otectus.plantfiber.config.PlantFiberConfig;
 import com.otectus.plantfiber.registry.ModBlockEntities;
 import com.otectus.plantfiber.registry.ModBlocks;
 import com.otectus.plantfiber.registry.ModCreativeTabs;
+import com.otectus.plantfiber.registry.ModEntities;
 import com.otectus.plantfiber.registry.ModItems;
 import com.otectus.plantfiber.registry.ModLootModifiers;
 import org.slf4j.Logger;
@@ -23,6 +24,7 @@ public class PlantFiberMod {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModBlocks.BLOCKS.register(modBus);
         ModBlockEntities.BLOCK_ENTITIES.register(modBus);
+        ModEntities.ENTITY_TYPES.register(modBus);
         ModItems.ITEMS.register(modBus);
         ModCreativeTabs.TABS.register(modBus);
         ModLootModifiers.register(modBus);

@@ -33,6 +33,16 @@ public final class PlantFiberConfig {
         public final ForgeConfigSpec.BooleanValue enableGrassArmor;
         public final ForgeConfigSpec.DoubleValue grassArmorDurabilityMultiplier;
 
+        public final ForgeConfigSpec.BooleanValue enablePlantMeshPaperRecipe;
+        public final ForgeConfigSpec.BooleanValue enableReinforcedFibers;
+
+        public final ForgeConfigSpec.BooleanValue enableRope;
+        public final ForgeConfigSpec.BooleanValue enableFenceRopeAnchors;
+        public final ForgeConfigSpec.BooleanValue ropeBreaksWhenUnsupported;
+        public final ForgeConfigSpec.BooleanValue unsupportedRopeDropsItems;
+        public final ForgeConfigSpec.BooleanValue ropeCanBeWaterlogged;
+        public final ForgeConfigSpec.BooleanValue ropeCanReplacePlants;
+
         private Common(ForgeConfigSpec.Builder builder) {
             builder.push("drops");
             enablePlantFiberDrops = builder
@@ -83,6 +93,36 @@ public final class PlantFiberConfig {
             grassArmorDurabilityMultiplier = builder
                     .comment("Durability multiplier relative to leather (0.5 = half leather)")
                     .defineInRange("grassArmorDurabilityMultiplier", 0.5d, 0.1d, 1.0d);
+            builder.pop();
+
+            builder.push("crafting");
+            enablePlantMeshPaperRecipe = builder
+                    .comment("Enable cooking Plant Mesh into Paper (furnace and campfire)")
+                    .define("enablePlantMeshPaperRecipe", true);
+            enableReinforcedFibers = builder
+                    .comment("Enable crafting Reinforced Fibers from Plant Fiber and String")
+                    .define("enableReinforcedFibers", true);
+            builder.pop();
+
+            builder.push("rope");
+            enableRope = builder
+                    .comment("Enable Rope crafting and placement")
+                    .define("enableRope", true);
+            enableFenceRopeAnchors = builder
+                    .comment("Allow Rope to be tied to fences (side-click a fence to start an outward hanging rope)")
+                    .define("enableFenceRopeAnchors", true);
+            ropeBreaksWhenUnsupported = builder
+                    .comment("Rope breaks when it loses its anchor or connected rope above")
+                    .define("ropeBreaksWhenUnsupported", true);
+            unsupportedRopeDropsItems = builder
+                    .comment("Rope that breaks due to losing support drops itself")
+                    .define("unsupportedRopeDropsItems", true);
+            ropeCanBeWaterlogged = builder
+                    .comment("Allow Rope to be waterlogged when placed in water")
+                    .define("ropeCanBeWaterlogged", false);
+            ropeCanReplacePlants = builder
+                    .comment("Allow Rope extension to replace plant blocks (tagged vegetation)")
+                    .define("ropeCanReplacePlants", true);
             builder.pop();
         }
     }

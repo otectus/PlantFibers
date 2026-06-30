@@ -1,0 +1,14 @@
+{
+  "conditions": [
+    { "type": "plantfiber:config", "flag": "enableReinforcedFibers" }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "plantfiber:plant_fiber" },
+    { "item": "minecraft:string" }
+  ],
+  "result": {
+    "item": "plantfiber:reinforced_fibers",
+    "count": 1
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "conditions": [
+    { "type": "plantfiber:config", "flag": "enableRope" }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "R",
+    "R",
+    "R"
+  ],
+  "key": {
+    "R": { "item": "plantfiber:reinforced_fibers" }
+  },
+  "result": {
+    "item": "plantfiber:rope",
+    "count": 3
+  }
+}

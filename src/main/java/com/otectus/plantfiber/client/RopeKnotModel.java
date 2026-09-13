@@ -16,8 +16,8 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
 /**
- * A small collar of rope hugging the central fence post (≈ the 6–10 px core) plus a 4×4 side
- * strand toward +Z that matches the descending rope column's thickness; the renderer rotates the
+ * A small collar of rope hugging the central fence post (≈ the 6–10 px core) plus a beveled side
+ * strand toward +Z inside the descending rope column's 4×4 bounds; the renderer rotates the
  * whole model so the strand points to the exit direction. Coordinates are in model pixels around
  * the origin (the post centre).
  */
@@ -44,7 +44,11 @@ public class RopeKnotModel extends EntityModel<RopeKnotEntity> {
                         .texOffs(0, 0).addBox(-3.0F, -8.0F, 2.0F, 6.0F, 4.0F, 1.0F)    // +Z band
                         .texOffs(0, 0).addBox(-3.0F, -8.0F, -2.0F, 1.0F, 4.0F, 4.0F)   // -X band
                         .texOffs(0, 0).addBox(2.0F, -8.0F, -2.0F, 1.0F, 4.0F, 4.0F)    // +X band
-                        .texOffs(0, 12).addBox(-2.0F, -8.0F, 3.0F, 4.0F, 4.0F, 5.0F),  // +Z stub to fence outer face, 4x4
+                        // Three adjoining prisms cut a pixel off each corner, matching the
+                        // hanging block model while keeping the existing attachment endpoints.
+                        .texOffs(0, 12).addBox(-1.0F, -8.0F, 3.0F, 2.0F, 4.0F, 5.0F)
+                        .texOffs(0, 22).addBox(-2.0F, -7.0F, 3.0F, 1.0F, 2.0F, 5.0F)
+                        .texOffs(0, 22).addBox(1.0F, -7.0F, 3.0F, 1.0F, 2.0F, 5.0F),
                 PartPose.ZERO);
         return LayerDefinition.create(mesh, 32, 32);
     }

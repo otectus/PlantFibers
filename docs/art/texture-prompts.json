@@ -1,0 +1,158 @@
+{
+  "tool": "built-in image_gen",
+  "normalization": "Nearest-neighbor resize; shared 16-color palette without dithering; binary alpha; original armor UV alpha mask.",
+  "assets": [
+    {
+      "texture": "src/main/resources/assets/plantfiber/textures/block/grass_block_top.png",
+      "size": [
+        16,
+        16
+      ],
+      "prompt": "Use case: style-transfer. Asset type: Minecraft 1.20.1 block texture grass_block_top.png. Edit the attached original grass-fiber block top into a beautiful vanilla-compatible compressed grass fiber texture. EXACT conceptual resolution 16 by 16 pixels, displayed as a nearest-neighbor enlargement: only 16 square pixel cells across and down, each cell a single flat solid color. Full-bleed seamless flat square tile, no margins, no perspective or scene. Interlocking small horizontal and diagonal 2-4 pixel straw and leaf clusters, muted moss green base, olive shadows, soft sage and dried yellow-green highlights. Use only these 7 opaque colors: #35452c #485837 #5d6e42 #758650 #8e9c62 #a8b47a #c4c58c. Organic restrained contrast, handcrafted clusters instead of random noise or repetitive checkerboard. No grass blades sticking out of tile, no dirt, no border, no text, no shading gradients, no anti-aliasing, no tiny details. This is a pixel texture file for direct game use, not a rendering of a block. Keep full square coverage completely opaque."
+    },
+    {
+      "texture": "src/main/resources/assets/plantfiber/textures/block/grass_block_side.png",
+      "size": [
+        16,
+        16
+      ],
+      "prompt": "Use case: style-transfer. Production asset for the Plant Fibers Minecraft 1.20.1 mod. Vanilla 16x texture-pack aesthetic, very low resolution pixel art, crisp SINGLE FLAT COLOR per square pixel cell. Think actual Minecraft inventory/resource-pack pixels, not detailed pixel illustration. No gradients, anti-aliasing, glow, text, border or shadows outside sprite. Muted botanical palette: deep olive #35452c, moss #485837 #5d6e42, sage #758650 #8e9c62 #a8b47a, straw #c4c58c, warm twine #68603d #a3925d #d0c38c. Use at most 10 colors. Keep background genuinely TRANSPARENT for item sprites and grass_blade, opaque for material tiles.  Native image grid EXACTLY 16 pixels wide by 16 pixels tall, shown as nearest-neighbor enlargement. Do not add finer detail than this logical grid. Opaque seamless full-bleed square tile of compressed vertical grass stalks, short offset 2 to 4 pixel reed segments with restrained highlights; two subtle horizontal brown twine bands exactly at pixel rows 4 and 11 across the entire tile, woven binding over dried green reeds. Full opaque coverage. No borders or vignette."
+    },
+    {
+      "texture": "src/main/resources/assets/plantfiber/textures/block/grass_blade.png",
+      "size": [
+        16,
+        16
+      ],
+      "prompt": "Use case: style-transfer. Production asset for the Plant Fibers Minecraft 1.20.1 mod. Vanilla 16x texture-pack aesthetic, very low resolution pixel art, crisp SINGLE FLAT COLOR per square pixel cell. Think actual Minecraft inventory/resource-pack pixels, not detailed pixel illustration. No gradients, anti-aliasing, glow, text, border or shadows outside sprite. Muted botanical palette: deep olive #35452c, moss #485837 #5d6e42, sage #758650 #8e9c62 #a8b47a, straw #c4c58c, warm twine #68603d #a3925d #d0c38c. Use at most 10 colors. Keep background genuinely TRANSPARENT for item sprites and grass_blade, opaque for material tiles.  Native image grid EXACTLY 16 pixels wide by 16 pixels tall, shown as nearest-neighbor enlargement. Do not add finer detail than this logical grid. Transparent scattered cut grass overlay tile. Six sparse isolated little bent leaf and straw sprigs scattered around the square, each 3 to 5 pixels long and 1 pixel wide, mostly horizontal/diagonal. 75 percent empty transparent space. No soil, no background."
+    },
+    {
+      "texture": "src/main/resources/assets/plantfiber/textures/item/reinforced_fibers.png",
+      "size": [
+        16,
+        16
+      ],
+      "prompt": "Use case: style-transfer. Production asset for the Plant Fibers Minecraft 1.20.1 mod. Vanilla 16x texture-pack aesthetic, very low resolution pixel art, crisp SINGLE FLAT COLOR per square pixel cell. Think actual Minecraft inventory/resource-pack pixels, not detailed pixel illustration. No gradients, anti-aliasing, glow, text, border or shadows outside sprite. Muted botanical palette: deep olive #35452c, moss #485837 #5d6e42, sage #758650 #8e9c62 #a8b47a, straw #c4c58c, warm twine #68603d #a3925d #d0c38c. Use at most 10 colors. Keep background genuinely TRANSPARENT for item sprites and grass_blade, opaque for material tiles.  Native image grid EXACTLY 16 pixels wide by 16 pixels tall, shown as nearest-neighbor enlargement. Do not add finer detail than this logical grid. Inventory icon of a small bundle of green grass fiber reeds lying diagonally bottom left to upper right, securely bound across the middle twice with warm tan string. Loose split leaf tips at both ends. Green core and distinctly contrasting tan cross bindings. Transparent background, 13 by 13 of 16 by 16 canvas."
+    },
+    {
+      "texture": "src/main/resources/assets/plantfiber/textures/block/rope.png",
+      "size": [
+        16,
+        16
+      ],
+      "prompt": "Use case: style-transfer. Production asset for the Plant Fibers Minecraft 1.20.1 mod. Vanilla 16x texture-pack aesthetic, very low resolution pixel art, crisp SINGLE FLAT COLOR per square pixel cell. Think actual Minecraft inventory/resource-pack pixels, not detailed pixel illustration. No gradients, anti-aliasing, glow, text, border or shadows outside sprite. Muted botanical palette: deep olive #35452c, moss #485837 #5d6e42, sage #758650 #8e9c62 #a8b47a, straw #c4c58c, warm twine #68603d #a3925d #d0c38c. Use at most 10 colors. Keep background genuinely TRANSPARENT for item sprites and grass_blade, opaque for material tiles.  Native image grid EXACTLY 16 pixels wide by 16 pixels tall, shown as nearest-neighbor enlargement. Do not add finer detail than this logical grid. Opaque full-bleed seamless tile of coarse twisted plant-fiber rope material. Four repeating vertical braided columns each 4 logical pixels wide. Each four pixel strip has diagonal olive and warm ochre fiber ridges, highlight toward center and brown shadow at strip edges. Used on a 4-pixel-wide cuboid with UV crop columns 6 to 10. Texture must work across the whole square, no single object or margin. Muted straw/brown: #4c4930 #68603d #87794b #a3925d #bbab72 #d0c38c."
+    },
+    {
+      "texture": "src/main/resources/assets/plantfiber/textures/item/plant_mesh.png",
+      "size": [
+        16,
+        16
+      ],
+      "prompt": "Use case: style-transfer. Production asset for the Plant Fibers Minecraft 1.20.1 mod. Vanilla 16x texture-pack aesthetic, very low resolution pixel art, crisp SINGLE FLAT COLOR per square pixel cell. Think actual Minecraft inventory/resource-pack pixels, not detailed pixel illustration. No gradients, anti-aliasing, glow, text, border or shadows outside sprite. Muted botanical palette: deep olive #35452c, moss #485837 #5d6e42, sage #758650 #8e9c62 #a8b47a, straw #c4c58c, warm twine #68603d #a3925d #d0c38c. Use at most 10 colors. Keep background genuinely TRANSPARENT for item sprites and grass_blade, opaque for material tiles.  Native image grid EXACTLY 16 pixels wide by 16 pixels tall, shown as nearest-neighbor enlargement. Do not add finer detail than this logical grid. Inventory icon of a small square open woven plant-fiber mesh with three rows of three square transparent holes. Sage-green and pale straw interlaced strips with alternating light/dark crossings and slightly ragged edges. Flat frontal sprite, not angled, no solid fill in holes. Transparent background. 12 by 12 within 16 by 16 canvas."
+    },
+    {
+      "texture": "src/main/resources/assets/plantfiber/textures/item/plant_fiber.png",
+      "size": [
+        16,
+        16
+      ],
+      "prompt": "Use case: style-transfer. Production asset for the Plant Fibers Minecraft 1.20.1 mod. Vanilla 16x texture-pack aesthetic, very low resolution pixel art, crisp SINGLE FLAT COLOR per square pixel cell. Think actual Minecraft inventory/resource-pack pixels, not detailed pixel illustration. No gradients, anti-aliasing, glow, text, border or shadows outside sprite. Muted botanical palette: deep olive #35452c, moss #485837 #5d6e42, sage #758650 #8e9c62 #a8b47a, straw #c4c58c, warm twine #68603d #a3925d #d0c38c. Use at most 10 colors. Keep background genuinely TRANSPARENT for item sprites and grass_blade, opaque for material tiles.  Native image grid EXACTLY 16 pixels wide by 16 pixels tall, shown as nearest-neighbor enlargement. Do not add finer detail than this logical grid. Inventory icon of THREE loose pale-green and straw grass fiber strands gathered in one diagonal small wisp from bottom left to upper right; frayed ends, distinguishable separate strands. Long crisp tapering stair-step silhouette, soft dark olive outline. No binding or rope. Transparent background, sprite occupies 13 by 13 of 16 by 16 canvas."
+    },
+    {
+      "texture": "src/main/resources/assets/plantfiber/textures/item/rope.png",
+      "size": [
+        16,
+        16
+      ],
+      "prompt": "Use case: style-transfer. Production asset for the Plant Fibers Minecraft 1.20.1 mod. Vanilla 16x texture-pack aesthetic, very low resolution pixel art, crisp SINGLE FLAT COLOR per square pixel cell. Think actual Minecraft inventory/resource-pack pixels, not detailed pixel illustration. No gradients, anti-aliasing, glow, text, border or shadows outside sprite. Muted botanical palette: deep olive #35452c, moss #485837 #5d6e42, sage #758650 #8e9c62 #a8b47a, straw #c4c58c, warm twine #68603d #a3925d #d0c38c. Use at most 10 colors. Keep background genuinely TRANSPARENT for item sprites and grass_blade, opaque for material tiles.  Native image grid EXACTLY 16 pixels wide by 16 pixels tall, shown as nearest-neighbor enlargement. Do not add finer detail than this logical grid. Inventory icon of a neatly coiled warm straw-colored braided rope, a loose hanging tail at lower right, two or three readable loops with dark hollow centers. A vertical oval roll with a small tie across its center. Simple vanilla Minecraft string-like material, muted olive-tan. Clearly reads as ROPE coil, not a leaf, infinity symbol or chain. Transparent background. 13 by 14 within 16 by 16 canvas."
+    },
+    {
+      "texture": "src/main/resources/assets/plantfiber/textures/item/grass_bandage.png",
+      "size": [
+        16,
+        16
+      ],
+      "prompt": "Use case: style-transfer. Production asset for the Plant Fibers Minecraft 1.20.1 mod. Vanilla 16x texture-pack aesthetic, very low resolution pixel art, crisp SINGLE FLAT COLOR per square pixel cell. Think actual Minecraft inventory/resource-pack pixels, not detailed pixel illustration. No gradients, anti-aliasing, glow, text, border or shadows outside sprite. Muted botanical palette: deep olive #35452c, moss #485837 #5d6e42, sage #758650 #8e9c62 #a8b47a, straw #c4c58c, warm twine #68603d #a3925d #d0c38c. Use at most 10 colors. Keep background genuinely TRANSPARENT for item sprites and grass_blade, opaque for material tiles.  Native image grid EXACTLY 16 pixels wide by 16 pixels tall, shown as nearest-neighbor enlargement. Do not add finer detail than this logical grid. Inventory icon of a compact rolled bandage woven from pale sage plant fiber, roll at upper left with a visible dark spiral opening and a short loose strip unfolding down to the right. Distinct pale cream-sage rolled material, muted moss edges, two tiny olive fiber stitches. Transparent background. 14 by 12 within 16 by 16 canvas."
+    },
+    {
+      "texture": "src/main/resources/assets/plantfiber/textures/item/grass_plaster.png",
+      "size": [
+        16,
+        16
+      ],
+      "prompt": "Use case: style-transfer. Production asset for the Plant Fibers Minecraft 1.20.1 mod. Vanilla 16x texture-pack aesthetic, very low resolution pixel art, crisp SINGLE FLAT COLOR per square pixel cell. Think actual Minecraft inventory/resource-pack pixels, not detailed pixel illustration. No gradients, anti-aliasing, glow, text, border or shadows outside sprite. Muted botanical palette: deep olive #35452c, moss #485837 #5d6e42, sage #758650 #8e9c62 #a8b47a, straw #c4c58c, warm twine #68603d #a3925d #d0c38c. Use at most 10 colors. Keep background genuinely TRANSPARENT for item sprites and grass_blade, opaque for material tiles.  Native image grid EXACTLY 16 pixels wide by 16 pixels tall, shown as nearest-neighbor enlargement. Do not add finer detail than this logical grid. Inventory icon of a herbal wound plaster: two short muted green leaf strips crossed diagonally into an X, a small light cream woven pad at center, dark sage outlines and a few straw thread pixels. Readable simple silhouette, NOT four leaves with a plus sign. Transparent background. 12 by 12 within 16 by 16 canvas."
+    },
+    {
+      "texture": "src/main/resources/assets/plantfiber/textures/item/grass_leggings.png",
+      "size": [
+        16,
+        16
+      ],
+      "prompt": "Use case: style-transfer. Production asset for the Plant Fibers Minecraft 1.20.1 mod. Vanilla 16x texture-pack aesthetic, very low resolution pixel art, crisp SINGLE FLAT COLOR per square pixel cell. Think actual Minecraft inventory/resource-pack pixels, not detailed pixel illustration. No gradients, anti-aliasing, glow, text, border or shadows outside sprite. Muted botanical palette: deep olive #35452c, moss #485837 #5d6e42, sage #758650 #8e9c62 #a8b47a, straw #c4c58c, warm twine #68603d #a3925d #d0c38c. Use at most 10 colors. Keep background genuinely TRANSPARENT for item sprites and grass_blade, opaque for material tiles.  Native image grid EXACTLY 16 pixels wide by 16 pixels tall, shown as nearest-neighbor enlargement. Do not add finer detail than this logical grid. Inventory icon of Minecraft leggings made of woven grass, familiar vanilla leather leggings silhouette: connected waist, two separated long rectangular legs, transparent gap between. Muted moss and sage woven leaf strips with a tan reed waistband. Shade with chunky clusters, no black outline, no glossy metal. Transparent background. 10 by 13 within 16 by 16 canvas."
+    },
+    {
+      "texture": "src/main/resources/assets/plantfiber/textures/models/armor/grass_layer_1.png",
+      "size": [
+        64,
+        32
+      ],
+      "prompt": "Use case: precise-object-edit. Production Minecraft grass armor UV texture. Edit the attached grass armor material atlas: EXTEND THE GREEN WOVEN GRASS MATERIAL TO COVER EVERY PIXEL OF THE ENTIRE CANVAS. Remove ALL white/gray checkerboard areas and fill them with matching green woven fiber texture. Completely opaque full bleed rectangular texture, no islands, no transparent area, no white/gray, no background, no gap, no silhouette. 2:1 aspect ratio, EXACTLY 64 by 32 logical pixel cells, each a flat solid square color. Tiny staggered 1x2 and 1x3 muted moss leaf strips and sage highlights, restrained contrast in colors #35452c #485837 #5d6e42 #758650 #8e9c62 #a8b47a. Thin muted straw stitched bands stretch horizontally across entire image exactly at logical pixel rows 10 and 28 from top, one pixel thick, #a3925d #bbab72. The production importer will clip the full texture to the original armor UV mask afterward, so it is CRITICAL that the entire canvas is covered by the SAME consistent grass fabric everywhere. No photographed texture, no smooth gradients, no anti-aliasing, no text, no 3D render, no illustrative garment. Hard vanilla Minecraft pixels."
+    },
+    {
+      "texture": "src/main/resources/assets/plantfiber/textures/item/grass_boots.png",
+      "size": [
+        16,
+        16
+      ],
+      "prompt": "Use case: style-transfer. Production asset for the Plant Fibers Minecraft 1.20.1 mod. Vanilla 16x texture-pack aesthetic, very low resolution pixel art, crisp SINGLE FLAT COLOR per square pixel cell. Think actual Minecraft inventory/resource-pack pixels, not detailed pixel illustration. No gradients, anti-aliasing, glow, text, border or shadows outside sprite. Muted botanical palette: deep olive #35452c, moss #485837 #5d6e42, sage #758650 #8e9c62 #a8b47a, straw #c4c58c, warm twine #68603d #a3925d #d0c38c. Use at most 10 colors. Keep background genuinely TRANSPARENT for item sprites and grass_blade, opaque for material tiles.  Native image grid EXACTLY 16 pixels wide by 16 pixels tall, shown as nearest-neighbor enlargement. Do not add finer detail than this logical grid. Inventory icon of a PAIR of Minecraft boots made of woven grass, familiar vanilla leather boots silhouette, two separated ankle-high boots side by side with short outward-facing toes and a gap between. Muted moss and sage fiber wraps, tan reed cuff bands and darker olive soles. Shade with a few chunky clusters, no black outline, no glossy metal. Transparent background. 13 by 11 within 16 by 16 canvas."
+    },
+    {
+      "texture": "src/main/resources/assets/plantfiber/textures/item/grass_helmet.png",
+      "size": [
+        16,
+        16
+      ],
+      "prompt": "Use case: style-transfer. Production asset for the Plant Fibers Minecraft 1.20.1 mod. Vanilla 16x texture-pack aesthetic, very low resolution pixel art, crisp SINGLE FLAT COLOR per square pixel cell. Think actual Minecraft inventory/resource-pack pixels, not detailed pixel illustration. No gradients, anti-aliasing, glow, text, border or shadows outside sprite. Muted botanical palette: deep olive #35452c, moss #485837 #5d6e42, sage #758650 #8e9c62 #a8b47a, straw #c4c58c, warm twine #68603d #a3925d #d0c38c. Use at most 10 colors. Keep background genuinely TRANSPARENT for item sprites and grass_blade, opaque for material tiles.  Native image grid EXACTLY 16 pixels wide by 16 pixels tall, shown as nearest-neighbor enlargement. Do not add finer detail than this logical grid. Inventory icon of a Minecraft armor helmet made of woven grass, familiar vanilla leather helmet silhouette with top dome, open dark/transparent face and short side guards. Muted moss and sage weave with a tan reed headband. Shade with a few chunky stair-step clusters, no black outline or shiny metallic finish. Transparent background. 12 by 10 within 16 by 16 canvas."
+    },
+    {
+      "texture": "src/main/resources/assets/plantfiber/textures/models/armor/grass_layer_2.png",
+      "size": [
+        64,
+        32
+      ],
+      "prompt": "Use case: precise-object-edit. Production Minecraft grass armor UV texture. Edit the attached grass armor material atlas: EXTEND THE GREEN WOVEN GRASS MATERIAL TO COVER EVERY PIXEL OF THE ENTIRE CANVAS. Remove ALL white/gray checkerboard areas and fill them with matching green woven fiber texture. Completely opaque full bleed rectangular texture, no islands, no transparent area, no white/gray, no background, no gap, no silhouette. 2:1 aspect ratio, EXACTLY 64 by 32 logical pixel cells, each a flat solid square color. Tiny staggered 1x2 and 1x3 muted moss leaf strips and sage highlights, restrained contrast in colors #35452c #485837 #5d6e42 #758650 #8e9c62 #a8b47a. Thin muted straw stitched bands stretch horizontally across entire image exactly at logical pixel rows 20 and 28 from top, one pixel thick, #a3925d #bbab72. The production importer will clip the full texture to the original armor UV mask afterward, so it is CRITICAL that the entire canvas is covered by the SAME consistent grass fabric everywhere. No photographed texture, no smooth gradients, no anti-aliasing, no text, no 3D render, no illustrative garment. Hard vanilla Minecraft pixels."
+    },
+    {
+      "texture": "src/main/resources/assets/plantfiber/textures/entity/rope_knot.png",
+      "size": [
+        32,
+        32
+      ],
+      "prompt": "Use case: style-transfer. Production asset for the Plant Fibers Minecraft 1.20.1 mod. Vanilla 16x texture-pack aesthetic, very low resolution pixel art, crisp SINGLE FLAT COLOR per square pixel cell. Think actual Minecraft inventory/resource-pack pixels, not detailed pixel illustration. No gradients, anti-aliasing, glow, text, border or shadows outside sprite. Muted botanical palette: deep olive #35452c, moss #485837 #5d6e42, sage #758650 #8e9c62 #a8b47a, straw #c4c58c, warm twine #68603d #a3925d #d0c38c. Use at most 10 colors. Keep background genuinely TRANSPARENT for item sprites and grass_blade, opaque for material tiles.  Native image grid EXACTLY 32 pixels wide by 32 pixels tall, shown as nearest-neighbor enlargement. Do not add finer detail than this logical grid. Edit this 32 by 32 logical pixel rope knot UV atlas. Keep full opaque square coverage. Seamless diagonal overlapping warm olive-tan straw braids, same coarse texture as rope with ridges every 4 pixels. More clearly separated interlocking straw fibers and dark narrow grooves, muted natural straw palette #4c4930 #68603d #87794b #a3925d #bbab72 #d0c38c. NOT a picture of a knot, not a cube, not a 3D render. Flat full-bleed material texture for model UVs, no border, no margins."
+    },
+    {
+      "texture": "src/main/resources/assets/plantfiber/textures/item/grass_chestplate.png",
+      "size": [
+        16,
+        16
+      ],
+      "prompt": "Use case: style-transfer. Production asset for the Plant Fibers Minecraft 1.20.1 mod. Vanilla 16x texture-pack aesthetic, very low resolution pixel art, crisp SINGLE FLAT COLOR per square pixel cell. Think actual Minecraft inventory/resource-pack pixels, not detailed pixel illustration. No gradients, anti-aliasing, glow, text, border or shadows outside sprite. Muted botanical palette: deep olive #35452c, moss #485837 #5d6e42, sage #758650 #8e9c62 #a8b47a, straw #c4c58c, warm twine #68603d #a3925d #d0c38c. Use at most 10 colors. Keep background genuinely TRANSPARENT for item sprites and grass_blade, opaque for material tiles.  Native image grid EXACTLY 16 pixels wide by 16 pixels tall, shown as nearest-neighbor enlargement. Do not add finer detail than this logical grid. Inventory icon of a Minecraft chestplate made of woven grass, familiar vanilla leather tunic silhouette with broad short sleeves and open neckline. Muted moss and sage overlapping short leaves, tan reed belt at waist and small tan collar seam. Shade with a few chunky clusters, no black outline, no glossy metal. Transparent background. 14 by 13 within 16 by 16 canvas."
+    },
+    {
+      "texture": "src/main/resources/assets/plantfiber/textures/block/grass_bed_mat.png",
+      "size": [
+        16,
+        16
+      ],
+      "prompt": "Use case: style-transfer. Production asset for the Plant Fibers Minecraft 1.20.1 mod. Vanilla 16x texture-pack aesthetic, very low resolution pixel art, crisp SINGLE FLAT COLOR per square pixel cell. Think actual Minecraft inventory/resource-pack pixels, not detailed pixel illustration. No gradients, anti-aliasing, glow, text, border or shadows outside sprite. Muted botanical palette: deep olive #35452c, moss #485837 #5d6e42, sage #758650 #8e9c62 #a8b47a, straw #c4c58c, warm twine #68603d #a3925d #d0c38c. Use at most 10 colors. Keep background genuinely TRANSPARENT for item sprites and grass_blade, opaque for material tiles.  Native image grid EXACTLY 16 pixels wide by 16 pixels tall, shown as nearest-neighbor enlargement. Do not add finer detail than this logical grid. NEW full-bleed opaque seamless flat 16x16 Minecraft texture of a handwoven grass sleeping mat. Neatly pressed alternating horizontal sage grass reed strips with little olive occlusion creases and short dry straw dashes. Much calmer and more linear than random grass block noise. Muted greens #485837 #5d6e42 #758650 #8e9c62 #a8b47a with occasional #c4c58c straw. No outer border, no frame, no illustration or perspective."
+    },
+    {
+      "texture": "src/main/resources/assets/plantfiber/textures/block/grass_bed_pillow.png",
+      "size": [
+        16,
+        16
+      ],
+      "prompt": "Use case: style-transfer. Production asset for the Plant Fibers Minecraft 1.20.1 mod. Vanilla 16x texture-pack aesthetic, very low resolution pixel art, crisp SINGLE FLAT COLOR per square pixel cell. Think actual Minecraft inventory/resource-pack pixels, not detailed pixel illustration. No gradients, anti-aliasing, glow, text, border or shadows outside sprite. Muted botanical palette: deep olive #35452c, moss #485837 #5d6e42, sage #758650 #8e9c62 #a8b47a, straw #c4c58c, warm twine #68603d #a3925d #d0c38c. Use at most 10 colors. Keep background genuinely TRANSPARENT for item sprites and grass_blade, opaque for material tiles.  Native image grid EXACTLY 16 pixels wide by 16 pixels tall, shown as nearest-neighbor enlargement. Do not add finer detail than this logical grid. NEW full-bleed opaque seamless flat 16x16 Minecraft texture of pale dried grass stuffed pillow cloth, a subtle broad weave of straw and pale sage fiber. Calm simple horizontal staggered 2-3 pixel stitch clusters. Colors #758052 #929964 #b1b784 #c8cb9a #d9d9ae. NO border, perspective, illustrated pillow, background, object or padding; only a square flat seamless pixel material tile."
+    }
+  ]
+}

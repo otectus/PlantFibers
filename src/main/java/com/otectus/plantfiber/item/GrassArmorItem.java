@@ -1,6 +1,8 @@
 package com.otectus.plantfiber.item;
 
+import com.otectus.plantfiber.config.EffectivePlantFiberConfig;
 import com.otectus.plantfiber.config.PlantFiberConfig;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -31,6 +33,32 @@ public class GrassArmorItem extends ArmorItem {
         }
         return super.canEquip(stack, armorType, entity);
     }
+
+    /**
+     * The registered maximum is the constant material baseline; the configured multiplier is applied
+     * here so the value follows the effective (server) config without ever being baked into the item.
+     */
+    @Override
+    public int getMaxDamage(ItemStack stack) {
+        int baseline = this.getMaterial().getDurabilityForType(this.getType());
+        return Math.max(1, (int) Math.floor(baseline * EffectivePlantFiberConfig.armorDurabilityMultiplier()));
+    }
+
+    // Lowering the multiplier can leave stored Damage above the new maximum. Presentation is clamped;
+    // the stored damage is deliberately left alone so old armor is neither repaired nor deleted.
+
+    @Override
+    public int getBarWidth(ItemStack stack) {
+        int max = this.getMaxDamage(stack);
+        int damage = Mth.clamp(stack.getDamageValue(), 0, max);
+        return Math.round(13.0F - damage * 13.0F / max);
+    }
+
+    @Override
+    public int getBarColor(ItemStack stack) {
+        int max = this.getMaxDamage(stack);
+        int damage = Mth.clamp(stack.getDamageValue(), 0, max);
+        float remaining = Math.max(0.0F, (float) (max - damage) / max);
+        return Mth.hsvToRgb(remaining / 3.0F, 1.0F, 1.0F);
+    }
 }
-
-

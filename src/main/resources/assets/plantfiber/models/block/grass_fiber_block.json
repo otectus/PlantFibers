@@ -2,7 +2,8 @@
   "parent": "minecraft:block/cube_bottom_top",
   "textures": {
     "top": "plantfiber:block/grass_block_top",
-    "bottom": "plantfiber:block/grass_block_side",
-    "side": "plantfiber:block/grass_block_side"
+    "bottom": "plantfiber:block/grass_block_top",
+    "side": "plantfiber:block/grass_block_side",
+    "particle": "plantfiber:block/grass_block_top"
   }
 }

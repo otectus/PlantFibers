@@ -92,7 +92,10 @@ public final class PlantFiberConfig {
                     .define("enableGrassArmor", true);
             grassArmorDurabilityMultiplier = builder
                     .comment("Durability multiplier relative to leather (0.5 = half leather)")
-                    .defineInRange("grassArmorDurabilityMultiplier", 0.5d, 0.1d, 1.0d);
+                    .defineInRange("grassArmorDurabilityMultiplier",
+                            EffectivePlantFiberConfig.DEFAULT_ARMOR_DURABILITY_MULTIPLIER,
+                            EffectivePlantFiberConfig.MIN_ARMOR_DURABILITY_MULTIPLIER,
+                            EffectivePlantFiberConfig.MAX_ARMOR_DURABILITY_MULTIPLIER);
             builder.pop();
 
             builder.push("crafting");

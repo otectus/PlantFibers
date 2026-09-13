@@ -1,20 +1,130 @@
 {
-  "parent": "block/block",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": true,
   "textures": {
     "rope": "plantfiber:block/rope",
     "particle": "plantfiber:block/rope"
   },
   "elements": [
     {
-      "from": [6, 0, 6],
-      "to": [10, 16, 10],
+      "name": "rope_core",
+      "from": [7, 0, 6],
+      "to": [9, 16, 10],
       "faces": {
-        "north": { "uv": [6, 0, 10, 16], "texture": "#rope" },
-        "east":  { "uv": [6, 0, 10, 16], "texture": "#rope" },
-        "south": { "uv": [6, 0, 10, 16], "texture": "#rope" },
-        "west":  { "uv": [6, 0, 10, 16], "texture": "#rope" },
-        "up":    { "uv": [6, 6, 10, 10], "texture": "#rope" },
-        "down":  { "uv": [6, 6, 10, 10], "texture": "#rope" }
+        "up": {
+          "uv": [7, 6, 9, 10],
+          "texture": "#rope"
+        },
+        "down": {
+          "uv": [7, 6, 9, 10],
+          "texture": "#rope"
+        },
+        "north": {
+          "uv": [7, 0, 9, 16],
+          "texture": "#rope"
+        },
+        "south": {
+          "uv": [7, 0, 9, 16],
+          "texture": "#rope"
+        }
+      }
+    },
+    {
+      "name": "rope_left_strand",
+      "from": [6, 0, 7],
+      "to": [7, 16, 9],
+      "faces": {
+        "up": {
+          "uv": [6, 7, 7, 9],
+          "texture": "#rope"
+        },
+        "down": {
+          "uv": [6, 7, 7, 9],
+          "texture": "#rope"
+        },
+        "north": {
+          "uv": [6, 0, 7, 16],
+          "texture": "#rope"
+        },
+        "south": {
+          "uv": [6, 0, 7, 16],
+          "texture": "#rope"
+        },
+        "west": {
+          "uv": [7, 0, 9, 16],
+          "texture": "#rope"
+        }
+      }
+    },
+    {
+      "name": "rope_right_strand",
+      "from": [9, 0, 7],
+      "to": [10, 16, 9],
+      "faces": {
+        "up": {
+          "uv": [9, 7, 10, 9],
+          "texture": "#rope"
+        },
+        "down": {
+          "uv": [9, 7, 10, 9],
+          "texture": "#rope"
+        },
+        "north": {
+          "uv": [9, 0, 10, 16],
+          "texture": "#rope"
+        },
+        "south": {
+          "uv": [9, 0, 10, 16],
+          "texture": "#rope"
+        },
+        "east": {
+          "uv": [7, 0, 9, 16],
+          "texture": "#rope"
+        }
+      }
+    },
+    {
+      "name": "west_shoulder_0",
+      "from": [7, 0, 6],
+      "to": [7, 16, 7],
+      "faces": {
+        "west": {
+          "uv": [6, 0, 7, 16],
+          "texture": "#rope"
+        }
+      }
+    },
+    {
+      "name": "east_shoulder_0",
+      "from": [9, 0, 6],
+      "to": [9, 16, 7],
+      "faces": {
+        "east": {
+          "uv": [6, 0, 7, 16],
+          "texture": "#rope"
+        }
+      }
+    },
+    {
+      "name": "west_shoulder_3",
+      "from": [7, 0, 9],
+      "to": [7, 16, 10],
+      "faces": {
+        "west": {
+          "uv": [9, 0, 10, 16],
+          "texture": "#rope"
+        }
+      }
+    },
+    {
+      "name": "east_shoulder_3",
+      "from": [9, 0, 9],
+      "to": [9, 16, 10],
+      "faces": {
+        "east": {
+          "uv": [9, 0, 10, 16],
+          "texture": "#rope"
+        }
       }
     }
   ]

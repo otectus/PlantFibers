@@ -1,65 +1,208 @@
 {
-  "ambientocclusion": false,
+  "parent": "minecraft:block/block",
+  "render_type": "minecraft:cutout",
+  "ambientocclusion": true,
   "textures": {
-    "top": "plantfiber:block/grass_block_top",
+    "top": "plantfiber:block/grass_bed_mat",
     "side": "plantfiber:block/grass_block_side",
+    "pillow": "plantfiber:block/grass_bed_pillow",
+    "binding": "plantfiber:block/rope",
     "grass": "plantfiber:block/grass_blade",
-    "particle": "plantfiber:block/grass_block_top"
+    "particle": "plantfiber:block/grass_bed_mat"
   },
   "elements": [
     {
-      "name": "base_mound",
+      "name": "pressed_grass_base",
       "from": [0, 0, 0],
-      "to": [16, 5, 16],
+      "to": [16, 3, 16],
       "faces": {
-        "up":    {"uv": [0, 0, 16, 16], "texture": "#top"},
-        "down":  {"uv": [0, 0, 16, 16], "texture": "#side", "cullface": "down"},
-        "north": {"uv": [0, 11, 16, 16], "texture": "#side", "cullface": "north"},
-        "south": {"uv": [0, 11, 16, 16], "texture": "#side", "cullface": "south"},
-        "east":  {"uv": [0, 11, 16, 16], "texture": "#side", "cullface": "east"},
-        "west":  {"uv": [0, 11, 16, 16], "texture": "#side", "cullface": "west"}
+        "up": {
+          "uv": [0, 0, 16, 16],
+          "texture": "#top"
+        },
+        "down": {
+          "uv": [0, 0, 16, 16],
+          "texture": "#top",
+          "cullface": "down"
+        },
+        "north": {
+          "uv": [0, 13, 16, 16],
+          "texture": "#side"
+        },
+        "south": {
+          "uv": [0, 13, 16, 16],
+          "texture": "#side"
+        },
+        "west": {
+          "uv": [0, 13, 16, 16],
+          "texture": "#side"
+        },
+        "east": {
+          "uv": [0, 13, 16, 16],
+          "texture": "#side"
+        }
       }
     },
     {
-      "name": "pillow_hump",
-      "from": [1, 5, 1],
-      "to": [15, 7, 6],
+      "name": "woven_sleeping_mat",
+      "from": [1, 3, 1],
+      "to": [15, 5, 16],
       "faces": {
-        "up":    {"uv": [1, 1, 15, 6], "texture": "#top"},
-        "north": {"uv": [1, 14, 15, 16], "texture": "#side"},
-        "south": {"uv": [1, 14, 15, 16], "texture": "#side"},
-        "east":  {"uv": [1, 14, 6, 16], "texture": "#side"},
-        "west":  {"uv": [1, 14, 6, 16], "texture": "#side"}
+        "up": {
+          "uv": [1, 1, 15, 16],
+          "texture": "#top"
+        },
+        "north": {
+          "uv": [1, 11, 15, 13],
+          "texture": "#top"
+        },
+        "south": {
+          "uv": [1, 11, 15, 13],
+          "texture": "#top"
+        },
+        "west": {
+          "uv": [1, 11, 16, 13],
+          "texture": "#top"
+        },
+        "east": {
+          "uv": [0, 11, 15, 13],
+          "texture": "#top"
+        }
       }
     },
     {
-      "name": "grass_overlay_pillow",
-      "from": [1, 7, 1],
-      "to": [15, 7.5, 7],
-      "rotation": {"angle": -22.5, "axis": "x", "origin": [8, 7, 4]},
+      "name": "straw_pillow",
+      "from": [2, 5, 2],
+      "to": [14, 6, 6],
       "faces": {
-        "up":   {"uv": [1, 0, 15, 6], "texture": "#grass"},
-        "down": {"uv": [1, 0, 15, 6], "texture": "#grass"}
+        "up": {
+          "uv": [2, 2, 14, 6],
+          "texture": "#pillow"
+        },
+        "north": {
+          "uv": [2, 10, 14, 11],
+          "texture": "#pillow"
+        },
+        "south": {
+          "uv": [2, 10, 14, 11],
+          "texture": "#pillow"
+        },
+        "west": {
+          "uv": [2, 10, 6, 11],
+          "texture": "#pillow"
+        },
+        "east": {
+          "uv": [10, 10, 14, 11],
+          "texture": "#pillow"
+        }
       }
     },
     {
-      "name": "grass_overlay_1",
-      "from": [0, 5, 6],
-      "to": [16, 5.5, 14],
-      "rotation": {"angle": 22.5, "axis": "x", "origin": [8, 5, 10]},
+      "name": "twine_over_mat",
+      "from": [1, 5, 11],
+      "to": [15, 6, 12],
       "faces": {
-        "up":   {"uv": [0, 1, 16, 9], "texture": "#grass"},
-        "down": {"uv": [0, 1, 16, 9], "texture": "#grass"}
+        "up": {
+          "uv": [7, 1, 8, 15],
+          "rotation": 90,
+          "texture": "#binding"
+        },
+        "north": {
+          "uv": [8, 1, 9, 15],
+          "rotation": 90,
+          "texture": "#binding"
+        },
+        "south": {
+          "uv": [8, 1, 9, 15],
+          "rotation": 90,
+          "texture": "#binding"
+        },
+        "west": {
+          "uv": [11, 10, 12, 11],
+          "texture": "#binding"
+        },
+        "east": {
+          "uv": [4, 10, 5, 11],
+          "texture": "#binding"
+        }
       }
     },
     {
-      "name": "grass_overlay_2",
-      "from": [2, 5, 9],
-      "to": [14, 5.5, 16],
-      "rotation": {"angle": 22.5, "axis": "z", "origin": [8, 5, 12]},
+      "name": "twine_left",
+      "from": [0, 3, 11],
+      "to": [1, 6, 12],
       "faces": {
-        "up":   {"uv": [2, 2, 14, 9], "texture": "#grass"},
-        "down": {"uv": [2, 2, 14, 9], "texture": "#grass"}
+        "up": {
+          "uv": [7, 0, 8, 3],
+          "texture": "#binding"
+        },
+        "north": {
+          "uv": [7, 0, 8, 3],
+          "texture": "#binding"
+        },
+        "south": {
+          "uv": [7, 0, 8, 3],
+          "texture": "#binding"
+        },
+        "west": {
+          "uv": [7, 0, 8, 3],
+          "texture": "#binding"
+        },
+        "east": {
+          "uv": [7, 0, 8, 3],
+          "texture": "#binding"
+        }
+      }
+    },
+    {
+      "name": "twine_right",
+      "from": [15, 3, 11],
+      "to": [16, 6, 12],
+      "faces": {
+        "up": {
+          "uv": [7, 0, 8, 3],
+          "texture": "#binding"
+        },
+        "north": {
+          "uv": [7, 0, 8, 3],
+          "texture": "#binding"
+        },
+        "south": {
+          "uv": [7, 0, 8, 3],
+          "texture": "#binding"
+        },
+        "west": {
+          "uv": [7, 0, 8, 3],
+          "texture": "#binding"
+        },
+        "east": {
+          "uv": [7, 0, 8, 3],
+          "texture": "#binding"
+        }
+      }
+    },
+    {
+      "name": "loose_fibers_1",
+      "from": [1, 5.0625, 7],
+      "to": [5, 5.0625, 11],
+      "shade": false,
+      "faces": {
+        "up": {
+          "uv": [0, 0, 4, 4],
+          "texture": "#grass"
+        }
+      }
+    },
+    {
+      "name": "loose_fibers_2",
+      "from": [11, 5.0625, 12],
+      "to": [15, 5.0625, 16],
+      "shade": false,
+      "faces": {
+        "up": {
+          "uv": [8, 0, 12, 4],
+          "texture": "#grass"
+        }
       }
     }
   ]

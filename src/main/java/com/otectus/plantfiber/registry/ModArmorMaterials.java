@@ -1,7 +1,6 @@
 package com.otectus.plantfiber.registry;
 
 import com.otectus.plantfiber.PlantFiberMod;
-import com.otectus.plantfiber.config.PlantFiberConfig;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ArmorItem;
@@ -10,15 +9,15 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 public final class ModArmorMaterials {
     public static final ArmorMaterial GRASS = new ArmorMaterial() {
-        private final int[] baseDurability = new int[]{13, 15, 16, 11};
+        // Constant leather-relative baselines. Registration happens long before the COMMON config is
+        // loaded, so the configured multiplier is applied per stack in GrassArmorItem#getMaxDamage
+        // instead of here.
+        private final int[] baseDurability = new int[]{65, 75, 80, 55};
         private final int[] defense = new int[]{1, 2, 3, 1};
 
         @Override
         public int getDurabilityForType(ArmorItem.Type type) {
-            int index = getTypeIndex(type);
-            double multiplier = PlantFiberConfig.COMMON.grassArmorDurabilityMultiplier.get();
-            double leatherMultiplier = 5.0d;
-            return Math.max(1, (int) Math.floor(baseDurability[index] * leatherMultiplier * multiplier));
+            return baseDurability[getTypeIndex(type)];
         }
 
         @Override

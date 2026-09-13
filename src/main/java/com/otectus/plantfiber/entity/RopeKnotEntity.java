@@ -116,7 +116,9 @@ public class RopeKnotEntity extends HangingEntity {
             if (this.level().isClientSide) {
                 return InteractionResult.SUCCESS;
             }
-            return rope.extendFromKnot(this.level(), this.pos, this.getExitDirection(), player, held);
+            // Route through the held stack's useOn so this shares the item route's Forge placement
+            // transaction (snapshot capture, placement event, rollback) instead of mutating directly.
+            return rope.extendFromKnot(this.pos, this.getExitDirection(), player, hand);
         }
         return InteractionResult.PASS;
     }

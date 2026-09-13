@@ -1,6 +1,6 @@
 {
   "pack": {
-    "description": "Plant Fiber resources",
+    "description": "Plant Fiber resources ${mod_version}",
     "pack_format": 15
   }
 }

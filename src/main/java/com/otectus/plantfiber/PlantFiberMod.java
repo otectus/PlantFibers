@@ -1,6 +1,7 @@
 package com.otectus.plantfiber;
 
 import com.otectus.plantfiber.config.PlantFiberConfig;
+import com.otectus.plantfiber.network.ArmorConfigNetwork;
 import com.otectus.plantfiber.registry.ModBlockEntities;
 import com.otectus.plantfiber.registry.ModBlocks;
 import com.otectus.plantfiber.registry.ModCreativeTabs;
@@ -30,6 +31,7 @@ public class PlantFiberMod {
         ModLootModifiers.register(modBus);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, PlantFiberConfig.SPEC);
+        ArmorConfigNetwork.register();
 
     }
 }

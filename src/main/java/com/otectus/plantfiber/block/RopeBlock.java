@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -30,6 +31,8 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
@@ -98,12 +101,12 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock {
     // --- Support / anchoring ---
 
     /** A normal block can support a rope hanging below it if it is tagged or presents a sturdy down face. */
-    private boolean isValidNormalAnchor(BlockState state, LevelReader level, BlockPos pos) {
+    boolean isValidNormalAnchor(BlockState state, LevelReader level, BlockPos pos) {
         return state.is(ModTags.ROPE_ANCHOR_BLOCKS) || state.isFaceSturdy(level, pos, Direction.DOWN);
     }
 
     /** A fence (by tag) can support an outward, side-tied rope. */
-    private boolean isValidFenceAnchor(BlockState state) {
+    boolean isValidFenceAnchor(BlockState state) {
         return state.is(ModTags.ROPE_FENCE_ANCHORS);
     }
 
@@ -180,7 +183,7 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock {
                 && SimpleWaterloggedBlock.super.canPlaceLiquid(level, pos, state, fluid);
     }
 
-    private boolean canReplaceWithRope(LevelReader level, BlockPos pos) {
+    boolean canReplaceWithRope(LevelReader level, BlockPos pos) {
         return isRopeReplaceable(level.getBlockState(pos));
     }
 
@@ -200,9 +203,11 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock {
     // --- Placement orchestration ---
 
     /**
-     * Entry point for placing/extending rope with the rope item. Delegated from
-     * {@code RopeBlockItem.useOn}. Runs the placement priority chain:
-     * existing rope &rarr; fence anchor &rarr; underside anchor &rarr; fail.
+     * Entry point for placing/extending rope with the rope item, delegated from
+     * {@code RopeBlockItem.useOn} and therefore already inside Forge's {@code ItemStack.useOn}
+     * placement transaction. The knot route reaches the same code by invoking the held stack's
+     * {@code useOn} with a fence hit, so both routes share one resolver, one authorization pass and
+     * one Forge wrapper.
      */
     public InteractionResult tryPlaceFromContext(UseOnContext context) {
         Player player = context.getPlayer();
@@ -210,70 +215,40 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock {
             return InteractionResult.PASS;
         }
         Level level = context.getLevel();
-        ItemStack held = context.getItemInHand();
-        BlockPos clickedPos = context.getClickedPos();
-        Direction clickedFace = context.getClickedFace();
-        BlockState clickedState = level.getBlockState(clickedPos);
-
-        // 1. Extend an existing rope column downward.
-        if (clickedState.is(this)) {
-            return tryExtendExistingRope(level, clickedPos, player, held);
-        }
-        // 2. Tie to a fence: create/realize a rope-knot entity on the post (the wrap), then the
-        //    hanging column extends outward then down from it.
-        if (clickedFace.getAxis().isHorizontal()
-                && PlantFiberConfig.COMMON.enableFenceRopeAnchors.get()
-                && isValidFenceAnchor(clickedState)) {
-            return tryAttachKnot(level, clickedPos, clickedFace, player, held);
-        }
-        // 3. Hang below a valid anchor block, whether the bottom or a side face was clicked.
-        if (isValidNormalAnchor(clickedState, level, clickedPos)) {
-            return tryPlaceUnderBlock(level, clickedPos, player, held);
-        }
-        // 4. Never side-mount rope on ordinary blocks.
-        return InteractionResult.PASS;
-    }
-
-    private InteractionResult tryExtendExistingRope(Level level, BlockPos clickedRopePos, Player player, ItemStack held) {
-        // Inherit the column's anchoring so a fence-hung column keeps hugging the fence the whole way
-        // down (every segment stays FENCE_ANCHORED with the same facing); a normal column stays centered.
-        BlockState columnState = level.getBlockState(clickedRopePos);
-        boolean fenceAnchored = columnState.getValue(FENCE_ANCHORED);
-        Direction facing = fenceAnchored ? columnState.getValue(HORIZONTAL_FACING) : Direction.NORTH;
-        // Walk down through the connected rope column to the lowest rope.
-        BlockPos.MutableBlockPos cursor = clickedRopePos.mutable();
-        int minY = level.getMinBuildHeight();
-        while (cursor.getY() - 1 >= minY && level.getBlockState(cursor.below()).is(this)) {
-            cursor.move(Direction.DOWN);
-        }
-        BlockPos target = cursor.below();
-        if (!isWithinPlaceableBounds(level, target) || !canReplaceWithRope(level, target)) {
+        RopePlacement.Resolved resolved =
+                RopePlacement.resolve(this, level, context.getClickedPos(), context.getClickedFace());
+        if (resolved == null) {
+            // Not a rope placement here: PASS so an off-hand item still gets its turn.
             return InteractionResult.PASS;
         }
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         }
-        placeRopeBlock(level, target, player, held, fenceAnchored, facing);
-        return InteractionResult.CONSUME;
+        ItemStack held = context.getItemInHand();
+        if (!RopePlacement.isAuthorized(level, player, held, resolved)) {
+            return InteractionResult.FAIL;
+        }
+        return switch (resolved.kind()) {
+            case KNOT -> placeKnot(level, player, held, resolved);
+            case SEGMENT -> placeSegment(level, player, held, resolved);
+        };
     }
 
     /**
-     * Side-clicking a fence creates a {@link RopeKnotEntity} on the post (if none yet), consuming
-     * one rope. A subsequent use (on the knot or the fence) extends the hanging rope outward, then
-     * down. The knot is the wrap visual + the anchor's lifecycle owner; the rope column itself is
-     * ordinary fence-anchored {@link RopeBlock}s starting one cell outward.
+     * Side-clicking a fence creates a {@link RopeKnotEntity} on the post, consuming one rope. A knot
+     * has no block snapshot for Forge to roll back, so insertion must succeed (it is cancellable
+     * through the entity-join event) before anything is charged or sounded. A refused insertion leaves
+     * the world untouched — in particular it never runs the knot's rope-breaking removal path.
      */
-    private InteractionResult tryAttachKnot(Level level, BlockPos fencePos, Direction clickedFace,
-                                            Player player, ItemStack held) {
-        if (level.isClientSide) {
-            return InteractionResult.SUCCESS;
+    private InteractionResult placeKnot(Level level, Player player, ItemStack held, RopePlacement.Resolved resolved) {
+        BlockPos fencePos = resolved.target();
+        if (!isValidFenceAnchor(level.getBlockState(fencePos)) || findKnot(level, fencePos) != null) {
+            return InteractionResult.FAIL;
         }
-        RopeKnotEntity knot = findKnot(level, fencePos);
-        if (knot != null) {
-            return extendFromKnot(level, fencePos, knot.getExitDirection(), player, held);
+        RopeKnotEntity created = new RopeKnotEntity(level, fencePos, resolved.supportFace());
+        if (!level.addFreshEntity(created)) {
+            return InteractionResult.FAIL;
         }
-        RopeKnotEntity created = new RopeKnotEntity(level, fencePos, clickedFace);
-        level.addFreshEntity(created);
         created.playPlacementSound();
         if (!player.getAbilities().instabuild) {
             held.shrink(1);
@@ -281,8 +256,65 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock {
         return InteractionResult.CONSUME;
     }
 
+    /**
+     * Place one rope block. The target is revalidated immediately before mutation, failure of the
+     * mutation itself is propagated, and the stack is only charged once the block actually changed —
+     * Forge owns the rollback if a placement event later cancels this transaction.
+     */
+    private InteractionResult placeSegment(Level level, Player player, ItemStack held, RopePlacement.Resolved resolved) {
+        BlockPos target = resolved.target();
+        if (!isWithinPlaceableBounds(level, target) || !canReplaceWithRope(level, target)
+                || !RopePlacement.isAuthorized(level, player, held, resolved)) {
+            return InteractionResult.FAIL;
+        }
+        FluidState fluid = level.getFluidState(target);
+        boolean waterlogged = PlantFiberConfig.COMMON.ropeCanBeWaterlogged.get()
+                && fluid.getType() == Fluids.WATER;
+        BlockState newState = this.defaultBlockState()
+                .setValue(WATERLOGGED, waterlogged)
+                .setValue(FENCE_ANCHORED, resolved.fenceAnchored())
+                .setValue(HORIZONTAL_FACING, resolved.facing());
+
+        RopePlacement.armPlacementSound(level, target);
+        if (!level.setBlock(target, newState, Block.UPDATE_ALL)) {
+            RopePlacement.clearPlacementSound();
+            return InteractionResult.FAIL;
+        }
+        if (!player.getAbilities().instabuild) {
+            held.shrink(1);
+        }
+        return InteractionResult.CONSUME;
+    }
+
+    /**
+     * Extend the rope hanging from a knot: the outward top segment if it is missing, otherwise the
+     * bottom of the existing column. Routed through the held stack's {@code useOn} so this shares the
+     * item route's Forge transaction. Server-side.
+     */
+    public InteractionResult extendFromKnot(BlockPos fencePos, Direction exitDirection,
+                                            Player player, InteractionHand hand) {
+        Vec3 hitLocation = Vec3.atCenterOf(fencePos)
+                .add(exitDirection.getStepX() * 0.5D, exitDirection.getStepY() * 0.5D, exitDirection.getStepZ() * 0.5D);
+        BlockHitResult hit = new BlockHitResult(hitLocation, exitDirection, fencePos, false);
+        return player.getItemInHand(hand).useOn(new UseOnContext(player, hand, hit));
+    }
+
+    /**
+     * Forge defers this callback until a captured placement is accepted, so it is the first point at
+     * which the placement is genuinely committed — and therefore where the placement sound belongs.
+     */
+    @Override
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
+        super.onPlace(state, level, pos, oldState, movedByPiston);
+        if (!level.isClientSide && RopePlacement.consumePlacementSound(level, pos)) {
+            SoundType sound = state.getSoundType(level, pos, null);
+            level.playSound(null, pos, sound.getPlaceSound(), SoundSource.BLOCKS,
+                    (sound.getVolume() + 1.0F) / 2.0F, sound.getPitch() * 0.8F);
+        }
+    }
+
     @Nullable
-    private static RopeKnotEntity findKnot(Level level, BlockPos fencePos) {
+    static RopeKnotEntity findKnot(Level level, BlockPos fencePos) {
         for (RopeKnotEntity knot : level.getEntitiesOfClass(RopeKnotEntity.class, new AABB(fencePos))) {
             if (knot.getPos().equals(fencePos)) {
                 return knot;
@@ -291,66 +323,10 @@ public class RopeBlock extends Block implements SimpleWaterloggedBlock {
         return null;
     }
 
-    /**
-     * Place the outward fence-anchored top segment if missing, otherwise extend the existing column
-     * downward. Called by {@link RopeKnotEntity#interact} and the fence-block path. Server-side.
-     */
-    public InteractionResult extendFromKnot(Level level, BlockPos fencePos, Direction exitDirection,
-                                            Player player, ItemStack held) {
-        BlockPos outward = fencePos.relative(exitDirection);
-        if (level.getBlockState(outward).is(this)) {
-            return tryExtendExistingRope(level, outward, player, held);
-        }
-        return placeOutwardRope(level, fencePos, exitDirection, player, held);
-    }
-
-    private InteractionResult placeOutwardRope(Level level, BlockPos fencePos, Direction exitDirection,
-                                               Player player, ItemStack held) {
-        BlockPos target = fencePos.relative(exitDirection);
-        if (!isWithinPlaceableBounds(level, target) || !canReplaceWithRope(level, target)) {
-            return InteractionResult.PASS;
-        }
-        // HORIZONTAL_FACING points back toward the supporting fence.
-        placeRopeBlock(level, target, player, held, true, exitDirection.getOpposite());
-        return InteractionResult.CONSUME;
-    }
-
-    private InteractionResult tryPlaceUnderBlock(Level level, BlockPos clickedPos, Player player, ItemStack held) {
-        BlockPos target = clickedPos.below();
-        if (!isWithinPlaceableBounds(level, target) || !canReplaceWithRope(level, target)) {
-            return InteractionResult.PASS;
-        }
-        if (level.isClientSide) {
-            return InteractionResult.SUCCESS;
-        }
-        placeRopeBlock(level, target, player, held, false, Direction.NORTH);
-        return InteractionResult.CONSUME;
-    }
-
-    private boolean isWithinPlaceableBounds(Level level, BlockPos pos) {
+    boolean isWithinPlaceableBounds(Level level, BlockPos pos) {
         return level.getWorldBorder().isWithinBounds(pos)
                 && pos.getY() >= level.getMinBuildHeight()
                 && pos.getY() < level.getMaxBuildHeight();
-    }
-
-    private void placeRopeBlock(Level level, BlockPos target, Player player, ItemStack held,
-                                boolean fenceAnchored, Direction facing) {
-        FluidState fluid = level.getFluidState(target);
-        boolean waterlogged = PlantFiberConfig.COMMON.ropeCanBeWaterlogged.get()
-                && fluid.getType() == Fluids.WATER;
-        BlockState newState = this.defaultBlockState()
-                .setValue(WATERLOGGED, waterlogged)
-                .setValue(FENCE_ANCHORED, fenceAnchored)
-                .setValue(HORIZONTAL_FACING, facing);
-        level.setBlock(target, newState, Block.UPDATE_ALL);
-
-        SoundType sound = newState.getSoundType(level, target, player);
-        level.playSound(null, target, sound.getPlaceSound(), SoundSource.BLOCKS,
-                (sound.getVolume() + 1.0F) / 2.0F, sound.getPitch() * 0.8F);
-
-        if (!player.getAbilities().instabuild) {
-            held.shrink(1);
-        }
     }
 
     // --- Fire ---

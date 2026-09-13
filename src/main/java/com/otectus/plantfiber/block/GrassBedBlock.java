@@ -81,11 +81,13 @@ public class GrassBedBlock extends HorizontalDirectionalBlock implements EntityB
             return InteractionResult.FAIL;
         }
 
+        BedPair pair = resolvePair(level, state, pos);
+
         // Explode in non-overworld dimensions
         if (!level.dimensionType().bedWorks()) {
             level.removeBlock(pos, false);
-            BlockPos otherPos = getOtherPartPos(state, pos);
-            if (level.getBlockState(otherPos).is(this)) {
+            if (pair != null) {
+                BlockPos otherPos = pos.equals(pair.headPos()) ? pair.footPos() : pair.headPos();
                 level.removeBlock(otherPos, false);
             }
             Vec3 center = pos.getCenter();
@@ -94,20 +96,19 @@ public class GrassBedBlock extends HorizontalDirectionalBlock implements EntityB
             return InteractionResult.SUCCESS;
         }
 
-        // Find the head position for sleeping
-        BlockPos headPos = state.getValue(PART) == BedPart.HEAD ? pos : getOtherPartPos(state, pos);
-        BlockState headState = level.getBlockState(headPos);
-
-        if (!headState.is(this) || headState.getValue(PART) != BedPart.HEAD) {
+        if (pair == null) {
             return InteractionResult.CONSUME;
         }
 
-        if (headState.getValue(OCCUPIED)) {
+        // The head owns occupancy; fix a foot that drifted out of step before reading it.
+        syncOccupancyFromHead(level, pair);
+
+        if (pair.headState().getValue(OCCUPIED)) {
             player.displayClientMessage(Component.translatable("block.minecraft.bed.occupied"), true);
             return InteractionResult.SUCCESS;
         }
 
-        Either<Player.BedSleepingProblem, net.minecraft.util.Unit> result = player.startSleepInBed(headPos);
+        Either<Player.BedSleepingProblem, net.minecraft.util.Unit> result = player.startSleepInBed(pair.headPos());
         result.ifLeft(problem -> {
             Component message = problem.getMessage();
             if (message != null) {
@@ -116,15 +117,10 @@ public class GrassBedBlock extends HorizontalDirectionalBlock implements EntityB
         });
 
         result.ifRight(unit -> {
-            // Mark as occupied
-            BlockState currentHeadState = level.getBlockState(headPos);
-            if (currentHeadState.is(this)) {
-                level.setBlock(headPos, currentHeadState.setValue(OCCUPIED, true), 3);
-            }
-            BlockPos bedFootPos = getOtherPartPos(currentHeadState, headPos);
-            BlockState currentFootState = level.getBlockState(bedFootPos);
-            if (currentFootState.is(this)) {
-                level.setBlock(bedFootPos, currentFootState.setValue(OCCUPIED, true), 3);
+            // Re-resolve: starting sleep can have changed the world underneath us.
+            BedPair current = resolvePair(level, level.getBlockState(pair.headPos()), pair.headPos());
+            if (current != null) {
+                setPairOccupied(level, current, true);
             }
         });
 
@@ -163,14 +159,19 @@ public class GrassBedBlock extends HorizontalDirectionalBlock implements EntityB
 
     // --- Breaking logic ---
 
+    /**
+     * Vanilla destruction ordering: only a creative player breaking the <em>foot</em> silently removes
+     * the head, because the head is this bed's single loot owner and creative must not drop anything.
+     * Every survival case is left to {@link #updateShape}, so the counterpart is destroyed through the
+     * normal neighbour update and resolves its loot table exactly once.
+     */
     @Override
     public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-        if (!level.isClientSide) {
-            BlockPos otherPos = getOtherPartPos(state, pos);
-            BlockState otherState = level.getBlockState(otherPos);
-            if (otherState.is(this) && otherState.getValue(PART) != state.getValue(PART)) {
-                level.setBlock(otherPos, Blocks.AIR.defaultBlockState(), 35);
-                level.levelEvent(player, 2001, otherPos, Block.getId(otherState));
+        if (!level.isClientSide && player.isCreative() && state.getValue(PART) == BedPart.FOOT) {
+            BedPair pair = resolvePair(level, state, pos);
+            if (pair != null) {
+                level.setBlock(pair.headPos(), Blocks.AIR.defaultBlockState(), 35);
+                level.levelEvent(player, 2001, pair.headPos(), Block.getId(pair.headState()));
             }
         }
         super.playerWillDestroy(level, pos, state, player);
@@ -213,57 +214,24 @@ public class GrassBedBlock extends HorizontalDirectionalBlock implements EntityB
 
     @Override
     public void setBedOccupied(BlockState state, Level level, BlockPos pos, LivingEntity sleeper, boolean occupied) {
-        level.setBlock(pos, state.setValue(OCCUPIED, occupied), 3);
+        BedPair pair = resolvePair(level, state, pos);
+        if (pair == null) {
+            // Half a bed: still keep this block's own state honest.
+            setOccupiedIfChanged(level, pos, state, occupied);
+            return;
+        }
+        setPairOccupied(level, pair, occupied);
     }
 
+    /**
+     * Delegated to {@link GrassBedRespawn}, which uses vanilla's stand-up candidate ordering with an
+     * added hazard veto. Deliberately not gated on {@code enableGrassBed}: disabling placement/use must
+     * not strand a player who already set their spawn at a valid bed.
+     */
     @Override
     public Optional<Vec3> getRespawnPosition(BlockState state, EntityType<?> type, LevelReader level, BlockPos pos,
                                               float orientation, @Nullable LivingEntity entity) {
-        // Find the foot position
-        Direction facing = state.getValue(FACING);
-        BlockPos footPos = state.getValue(PART) == BedPart.FOOT ? pos : pos.relative(facing.getOpposite());
-        BlockPos headPos = state.getValue(PART) == BedPart.HEAD ? pos : pos.relative(facing);
-
-        // Check positions around the bed for a safe spawn
-        // Priority: sides of foot, sides of head, then around the perimeter
-        Direction left = facing.getCounterClockWise();
-        Direction right = facing.getClockWise();
-
-        BlockPos[] candidates = {
-                footPos.relative(left), footPos.relative(right),
-                headPos.relative(left), headPos.relative(right),
-                footPos.relative(facing.getOpposite()),
-                headPos.relative(facing),
-                footPos.relative(left).relative(facing.getOpposite()),
-                footPos.relative(right).relative(facing.getOpposite()),
-                headPos.relative(left).relative(facing),
-                headPos.relative(right).relative(facing)
-        };
-
-        for (BlockPos candidate : candidates) {
-            Optional<Vec3> respawn = findSafeRespawn(type, level, candidate);
-            if (respawn.isPresent()) {
-                return respawn;
-            }
-        }
-
-        return Optional.empty();
-    }
-
-    private static Optional<Vec3> findSafeRespawn(EntityType<?> type, LevelReader level, BlockPos pos) {
-        BlockState below = level.getBlockState(pos.below());
-        if (!below.isFaceSturdy(level, pos.below(), Direction.UP)) {
-            return Optional.empty();
-        }
-
-        VoxelShape shape1 = level.getBlockState(pos).getCollisionShape(level, pos);
-        VoxelShape shape2 = level.getBlockState(pos.above()).getCollisionShape(level, pos.above());
-
-        if (shape1.isEmpty() && shape2.isEmpty()) {
-            return Optional.of(Vec3.upFromBottomCenterOf(pos, 0.0));
-        }
-
-        return Optional.empty();
+        return GrassBedRespawn.findRespawnPosition(this, state, type, level, pos, orientation, entity);
     }
 
     // --- Pathfinding ---
@@ -283,7 +251,54 @@ public class GrassBedBlock extends HorizontalDirectionalBlock implements EntityB
 
     // --- Helpers ---
 
-    private static BlockPos getOtherPartPos(BlockState state, BlockPos pos) {
+    /** A validated head/foot pair: same block, opposite parts, matching facing, reciprocal positions. */
+    public record BedPair(BlockPos headPos, BlockState headState, BlockPos footPos, BlockState footState,
+                          Direction facing) {
+    }
+
+    /**
+     * Resolve the bed {@code state}/{@code pos} belongs to, or {@code null} when the two halves do not
+     * form a valid pair. Bounded to the two cells involved: it never scans, recurses, or adopts an
+     * unrelated bed block that merely happens to be adjacent.
+     */
+    @Nullable
+    public BedPair resolvePair(BlockGetter level, BlockState state, BlockPos pos) {
+        if (!state.is(this)) {
+            return null;
+        }
+        Direction facing = state.getValue(FACING);
+        BedPart part = state.getValue(PART);
+        BlockPos otherPos = getOtherPartPos(state, pos);
+        BlockState otherState = level.getBlockState(otherPos);
+        if (!otherState.is(this)
+                || otherState.getValue(PART) == part
+                || otherState.getValue(FACING) != facing
+                || !getOtherPartPos(otherState, otherPos).equals(pos)) {
+            return null;
+        }
+        return part == BedPart.HEAD
+                ? new BedPair(pos, state, otherPos, otherState, facing)
+                : new BedPair(otherPos, otherState, pos, state, facing);
+    }
+
+    /** Write {@code occupied} to both halves, skipping any half that already matches. */
+    private void setPairOccupied(Level level, BedPair pair, boolean occupied) {
+        setOccupiedIfChanged(level, pair.headPos(), pair.headState(), occupied);
+        setOccupiedIfChanged(level, pair.footPos(), pair.footState(), occupied);
+    }
+
+    /** Bring a foot that drifted out of step back to the head's occupancy. */
+    private void syncOccupancyFromHead(Level level, BedPair pair) {
+        setOccupiedIfChanged(level, pair.footPos(), pair.footState(), pair.headState().getValue(OCCUPIED));
+    }
+
+    private static void setOccupiedIfChanged(Level level, BlockPos pos, BlockState state, boolean occupied) {
+        if (state.getValue(OCCUPIED) != occupied) {
+            level.setBlock(pos, state.setValue(OCCUPIED, occupied), 3);
+        }
+    }
+
+    static BlockPos getOtherPartPos(BlockState state, BlockPos pos) {
         Direction facing = state.getValue(FACING);
         return state.getValue(PART) == BedPart.FOOT ? pos.relative(facing) : pos.relative(facing.getOpposite());
     }

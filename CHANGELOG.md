@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.2.1] - 2026-09-12
+
+### Fixes
+- Grass Armor is now registered with a constant durability baseline and applies the configured
+  `grassArmorDurabilityMultiplier` per item stack, so item registration no longer reads the config
+  before it is loaded; existing damage, enchantments and repair data are preserved when the
+  multiplier changes, with only the durability bar clamped
+- A joined client now uses the server's armor durability multiplier (one small login/reload message),
+  and drops it again on disconnect so single-player is unaffected
+- Breaking either half of a Grass Bed now drops exactly one bed in survival and none in creative:
+  the head is the single loot owner and only creative foot-first destruction removes its partner
+  directly, matching vanilla ordering
+- Bed occupancy is written to both validated halves through one bounded helper, and a half that
+  drifted out of step is corrected on use instead of leaving a permanently "occupied" bed
+- Bed respawn now uses vanilla's stand-up placement ordering with an added fire/lava veto and a world
+  border check, replacing the hand-written candidate list; an already-valid bed keeps working as a
+  respawn point even when bed placement is disabled in config
+- Rope placement resolves, authorizes and commits through one shared path for both the item and the
+  fence-knot route, so spawn protection, adventure-mode and protection-mod denials block the
+  placement without consuming rope or playing a sound; the placement sound now waits until the
+  placement is actually accepted
+- A failed rope-knot entity insertion no longer charges a rope or plays a sound, and is handled
+  separately from block placement
+
+### Metadata
+- The mod, Minecraft and Forge versions live only in `gradle.properties` and are expanded into
+  `mods.toml` and `pack.mcmeta` by `processResources`
+
 ## [1.2.0] - 2026-06-20
 
 ### Rope — Fence Ties & Textures

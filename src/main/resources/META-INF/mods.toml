@@ -1,10 +1,10 @@
 modLoader="javafml"
-loaderVersion="[47,)"
+loaderVersion="${loader_version_range}"
 license="All Rights Reserved"
 
 [[mods]]
 modId="plantfiber"
-version="1.2.0"
+version="${mod_version}"
 displayName="Plant Fiber + Grass Tier"
 authors="Otectus"
 description='''
@@ -16,14 +16,14 @@ Reinforced Fibers and climbable Rope for vertical exploration.
 [[dependencies.plantfiber]]
 modId="forge"
 mandatory=true
-versionRange="[47,)"
+versionRange="${forge_version_range}"
 ordering="NONE"
 side="BOTH"
 
 [[dependencies.plantfiber]]
 modId="minecraft"
 mandatory=true
-versionRange="[1.20.1,1.20.2)"
+versionRange="${minecraft_version_range}"
 ordering="NONE"
 side="BOTH"
 
